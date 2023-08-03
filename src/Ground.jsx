@@ -22,8 +22,8 @@ export function Ground() {
     "/textures/alpha-map.png"
   );
 
-//   const meshRef = useRef(null);
-//   const meshRef2 = useRef(null);
+  const meshRef = useRef(null);
+  const meshRef2 = useRef(null);
 
   useEffect(() => {
     if (!gridMap) return;
@@ -36,24 +36,24 @@ export function Ground() {
     gridMap.anisotropy = 16;
   },[gridMap])
 
-//   useEffect(() => {
-//     if (!meshRef.current) return;
+  useEffect(() => {
+    if (!meshRef.current) return;
 
-//     var uvs = meshRef.current.geometry.attributes.uv.array;
-//     meshRef.current.geometry.setAttribute("uv2", new BufferAttribute(uvs, 2));
+    var uvs = meshRef.current.geometry.attributes.uv.array;
+    meshRef.current.geometry.setAttribute("uv2", new BufferAttribute(uvs, 2));
 
-//     var uvs2 = meshRef2.current.geometry.attributes.uv.array;
-//     meshRef2.current.geometry.setAttribute("uv2", new BufferAttribute(uvs2, 2));
-//   }, [meshRef.current]);
+    var uvs2 = meshRef2.current.geometry.attributes.uv.array;
+    meshRef2.current.geometry.setAttribute("uv2", new BufferAttribute(uvs2, 2));
+  }, [meshRef.current]);
 
   return (
     <>
       <mesh
-        // ref={meshRef2}
+        ref={meshRef2}
         position={[-2.285, -0.01, -1.325]}
         rotation-x={-Math.PI * 0.5}
       >
-        {/* <planeGeometry args={[12, 12]} /> */}
+        <planeGeometry args={[12, 12]} />
         <meshBasicMaterial
           opacity={0.325}
           alphaMap={gridMap}
@@ -63,7 +63,7 @@ export function Ground() {
       </mesh>
 
       <mesh
-        // ref={meshRef}
+        ref={meshRef}
         position={[-2.285, -0.015, -1.325]}
         rotation-x={-Math.PI * 0.5}
         rotation-z={-0.079}
