@@ -6,6 +6,13 @@ import { BufferAttribute } from "three";
 import { TextureLoader } from "three/src/loaders/TextureLoader";
 
 export function Ground() {
+  const [ref] = usePlane(
+    () => ({ 
+      type: 'Static', 
+      rotation: [-Math.PI / 2, 0, 0] }
+    ), 
+    useRef(null)
+  );
 
   const gridMap = useLoader(
     TextureLoader,
