@@ -1,12 +1,13 @@
 import { useBox, useRaycastVehicle } from "@react-three/cannon";
-import { useLoader } from "@react-three/fiber";
+import { useFrame, useLoader } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { useWheels } from "./hooks/useWheels";
 import { WheelDebug } from "./WheelDebug";
 import { useControls } from "./hooks/useControls";
+import { Quaternion, Vector3 } from "three";
 
-export const Car = () => {
+export const Car = ({thirdPersonView}) => {
     let carModel = useLoader(
         GLTFLoader,
         "/models/car.glb"
@@ -33,6 +34,27 @@ export const Car = () => {
         wheels
     }), useRef(null));
 
+    useFrame((state)=>{
+        if(!thirdPersonView) return;
+        let position = new Vector3(0,0,0);
+        position.setFromMatrixPosition(chassisBody.current.matrixWorld);
+
+        let quaternion = new Quaternion(0,0,0,0);
+        quaternion.setFromRotationMatrix(chassisBody.current.matrixWorld);
+
+        let wDir = new Vector3(0,0,-1);
+        wDir.applyQuaternion(quaternion);
+        wDir.normalize();
+
+        let cameraPosition = position.clone().add(
+            wDir.clone().multiplyScalar(-1).add(
+                new Vector3(0,0.3,0)
+            )
+        );
+
+        state.camera.position.copy(cameraPosition);
+        state.camera.lookAt(position);
+    })
     useControls(vehicleAPI, chassisAPI);
 
     useEffect(() => {
