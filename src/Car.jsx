@@ -27,13 +27,13 @@ export const Car = () => {
 
     const [wheels, wheelInfos] = useWheels(width, height, front, wheelRadius);
 
-    const [vehicle, vehicleAPI] = useRaycastVehicle(()=>({
+    const [vehicle, vehicleAPI] = useRaycastVehicle(() => ({
         chassisBody,
         wheelInfos,
         wheels
     }), useRef(null));
 
-    useControls(vehicleAPI,chassisAPI);
+    useControls(vehicleAPI, chassisAPI);
 
     useEffect(() => {
         carModel.scale.set(0.0015, 0.0015, 0.0015);
@@ -43,10 +43,9 @@ export const Car = () => {
     return (
         // <primitive object={carModel} rotation-y={Math.PI} />
         <group ref={vehicle} name="vehicle">
-            <mesh ref={chassisBody}>
-                <meshBasicMaterial transparent={true} opacity={0.3} />
-                <boxGeometry args={chassisBodyArgs} />
-            </mesh>
+            <group ref={chassisBody} name="chassisBody">
+                <primitive object={carModel} rotation-y={Math.PI} position={[0, -0.09, -1.55]} />
+            </group>
             <WheelDebug wheelRef={wheels[0]} radius={wheelRadius} />
             <WheelDebug wheelRef={wheels[1]} radius={wheelRadius} />
             <WheelDebug wheelRef={wheels[2]} radius={wheelRadius} />
